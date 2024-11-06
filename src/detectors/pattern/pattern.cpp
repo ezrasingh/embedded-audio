@@ -14,9 +14,9 @@ void PatternDetector::update()
     slopeDetector->update();
 }
 
-unsigned int PatternDetector::frequency() const
+float PatternDetector::frequency() const
 {
-    return (period > 0) ? SAMPLE_RATE / period : 0;
+    return (period > 0) ? static_cast<float>(SAMPLE_RATE) / static_cast<float>(period) : 0;
 }
 
 PatternDetector::Result PatternDetector::process()

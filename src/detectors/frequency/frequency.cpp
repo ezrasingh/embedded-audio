@@ -18,7 +18,7 @@ void FrequencyDetector::update()
     clock++;
 }
 
-unsigned int FrequencyDetector::frequency() const
+float FrequencyDetector::frequency() const
 {
-    return (period > 0) ? SAMPLE_RATE / period : 0;
+    return (period > 0) ? static_cast<float>(SAMPLE_RATE) / static_cast<float>(period) : 0;
 }

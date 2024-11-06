@@ -31,7 +31,7 @@ public:
 
     void reset() override;
     void update() override;
-    unsigned int frequency() const;
+    float frequency() const;
     Result process();
     Result detect(void (*pinWriter)());
 };

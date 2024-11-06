@@ -17,7 +17,7 @@ public:
 
     void reset() override;
     void update() override;
-    unsigned int frequency() const;
+    float frequency() const;
 };
 
 #endif // FREQUENCY_DETECTOR_H
