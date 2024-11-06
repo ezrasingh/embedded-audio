@@ -1,9 +1,9 @@
 #ifndef PATTERN_DETECTOR_H
 #define PATTERN_DETECTOR_H
 
-#include "../signal.h"
-#include "detector.h"
-#include "slope.h"
+#include "core/signal.h"
+#include "detectors/base/detector.h"
+#include "detectors/slope/slope.h"
 
 // Pattern detector to recognize periodic signal patterns
 struct PatternDetector : public Detector

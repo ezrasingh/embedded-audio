@@ -1,8 +1,8 @@
 #ifndef LEVEL_DETECTOR_H
 #define LEVEL_DETECTOR_H
 
-#include "../signal.h"
-#include "detector.h"
+#include "core/signal.h"
+#include "detectors/base/detector.h"
 
 // Level detector to assess signal amplitude against a threshold
 struct LevelDetector : public Detector

@@ -1,8 +1,8 @@
 #ifndef FREQUENCY_DETECTOR_H
 #define FREQUENCY_DETECTOR_H
 
-#include "../signal.h"
-#include "detector.h"
+#include "core/signal.h"
+#include "detectors/base/detector.h"
 
 // Frequency detector to measure signal frequency
 struct FrequencyDetector : public Detector

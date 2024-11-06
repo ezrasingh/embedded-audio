@@ -1,10 +1,10 @@
 #ifndef PITCH_DETECTOR_H
 #define PITCH_DETECTOR_H
 
-#include "../signal.h"
-#include "detector.h"
-#include "level.h"
-#include "pattern.h"
+#include "core/signal.h"
+#include "detectors/base/detector.h"
+#include "detectors/level/level.h"
+#include "detectors/pattern/pattern.h"
 
 // Pitch detector to integrate multiple signal analyzers
 struct PitchDetector : public Detector

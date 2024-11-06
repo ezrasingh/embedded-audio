@@ -1,8 +1,7 @@
 #ifndef DETECTOR_H
 #define DETECTOR_H
 
-#include <Arduino.h>
-#include "../constants.h"
+#include "core/constants.h"
 
 // Template function to check if a value is within a given tolerance
 template <typename Type>

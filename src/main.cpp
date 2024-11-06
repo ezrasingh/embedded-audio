@@ -1,10 +1,11 @@
 #include <Arduino.h>
-#include "signal.h"
-#include "system.h"
-#include "detector/level.h"
-#include "detector/slope.h"
-#include "detector/pattern.h"
-#include "detector/pitch.h"
+
+#include "core/signal.h"
+#include "core/system.h"
+#include "detectors/level/level.h"
+#include "detectors/slope/slope.h"
+#include "detectors/pattern/pattern.h"
+#include "detectors/pitch/pitch.h"
 
 static SignalAnalyzer signal;
 static LevelDetector levelDetector(&signal);

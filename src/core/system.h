@@ -29,4 +29,4 @@ namespace System
     void turnOn(Pin pin);
 };
 
-#endif
+#endif // SYSTEM_H

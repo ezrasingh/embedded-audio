@@ -1,8 +1,8 @@
 #ifndef SLOPE_DETECTOR_H
 #define SLOPE_DETECTOR_H
 
-#include "../signal.h"
-#include "detector.h"
+#include "core/signal.h"
+#include "detectors/base/detector.h"
 
 // Slope detector to monitor changes in signal slope
 struct SlopeDetector : public Detector
