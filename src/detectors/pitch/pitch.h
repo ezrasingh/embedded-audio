@@ -8,7 +8,7 @@
 #include "detectors/pattern/pattern.h"
 
 // Reference note information for 12-tone equal temperament
-constexpr float A4_FREQ = 440.0f;
+constexpr float DEFAULT_A4 = 440.0f;
 
 // read only pitch data
 struct Pitch
@@ -27,6 +27,8 @@ public:
 // Pitch detector to integrate multiple signal analyzers
 struct PitchDetector : public Detector
 {
+    float fundamentalFreq;
+
 private:
     SignalAnalyzer *signal;
     LevelDetector *levelDetector;
@@ -34,12 +36,16 @@ private:
 
 public:
     explicit PitchDetector(SignalAnalyzer *analyzer, LevelDetector *levelDetector, PatternDetector *patternDetector)
-        : signal(analyzer), levelDetector(levelDetector), patternDetector(patternDetector) {}
+        : signal(analyzer),
+          levelDetector(levelDetector),
+          patternDetector(patternDetector),
+          fundamentalFreq(DEFAULT_A4) {}
 
     void reset() override;
     void update() override;
 
     void detect(void (*pinWriter)());
+    void setFundamentalFreq(float freq);
     Pitch pitch() const;
 };
 

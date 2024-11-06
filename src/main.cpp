@@ -18,6 +18,7 @@ void setup()
 {
   Serial.begin(9600);
   System::setup();
+  pitchDetector.setFundamentalFreq(440.0f);
 }
 
 // Main loop that checks for signal clipping and frequency detection
@@ -30,9 +31,8 @@ void loop()
   // If the level detector detects an above-threshold condition, print the frequency
   if (levelDetector.detect() == LevelDetector::Result::AboveThreshold)
   {
-    float freq = patternDetector.frequency(); // Get frequency from pattern detector
-    Serial.print(freq, 2);                    // Print frequency with 2 decimal places
-    Serial.println(" Hz");
+    const Pitch pitch = patternDetector.pitch(); // Get pitch from pattern detector
+    Serial.println(pitch.note());                // Print note from pitch
   }
 
   delay(1000); // Delay for 1 second before the next loop iteration
