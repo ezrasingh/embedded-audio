@@ -8,8 +8,8 @@
 struct FrequencyDetector : public Detector
 {
 private:
-    unsigned int clock = 0;
-    unsigned int period = 0;
+    unsigned int clock;
+    unsigned int period;
     SignalAnalyzer *signal;
 
 public:
@@ -17,6 +17,7 @@ public:
 
     void reset() override;
     void update() override;
+
     float frequency() const;
 };
 

@@ -5,11 +5,9 @@ void System::setup()
 {
     pinMode(13, OUTPUT); // LED clipping indicator pin
     pinMode(12, OUTPUT); // Output pin
-
-    cli(); // Disable interrupts
+    noInterrupts();
 
     // Set up continuous sampling of analog pin 0 at 38.5kHz
-
     // Clear ADCSRA and ADCSRB registers
     ADCSRA = 0;
     ADCSRB = 0;
@@ -24,7 +22,7 @@ void System::setup()
     ADCSRA |= (1 << ADEN);                 // Enable ADC
     ADCSRA |= (1 << ADSC);                 // Start ADC measurements
 
-    sei(); // Enable interrupts
+    interrupts(); // Enable interrupts
 }
 
 // Turns off the specified pin

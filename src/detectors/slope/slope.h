@@ -8,8 +8,8 @@
 struct SlopeDetector : public Detector
 {
 private:
-    unsigned int time = 0;
-    byte maxSlope = 0;
+    unsigned int clock;
+    byte maxSlope;
     SignalAnalyzer *signal;
 
 public:

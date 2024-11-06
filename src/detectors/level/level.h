@@ -8,9 +8,9 @@
 struct LevelDetector : public Detector
 {
 private:
-    unsigned int clock = 0;
-    byte maxAmp = 0;
-    byte prevMax = 0;
+    unsigned int clock;
+    byte maxAmp;
+    byte prevMax;
     SignalAnalyzer *signal;
 
 public:
@@ -24,6 +24,7 @@ public:
 
     void reset() override;
     void update() override;
+
     Result detect(byte threshold = AMPLITUDE_THRESHOLD) const;
 };
 

@@ -30,8 +30,8 @@ void loop()
   // If the level detector detects an above-threshold condition, print the frequency
   if (levelDetector.detect() == LevelDetector::Result::AboveThreshold)
   {
-    unsigned int freq = patternDetector.frequency(); // Get frequency from pattern detector
-    Serial.print(freq);
+    float freq = patternDetector.frequency(); // Get frequency from pattern detector
+    Serial.print(freq, 2);                    // Print frequency with 2 decimal places
     Serial.println(" Hz");
   }
 
@@ -45,7 +45,6 @@ REGISTER_ADC_HANDLERS(
     signal.update(ADCH); // Update signal with the latest ADC value
     pitchDetector.detect([]
                          { System::turnOn(System::Pin::Output); }); // Detect pitch and turn on output pin
-    pitchDetector.update();                                         // Update pitch detector state
 
     // If clipping is detected, turn on the clipping indicator LED
     if (signal.isClipping())

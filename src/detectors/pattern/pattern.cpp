@@ -58,12 +58,16 @@ PatternDetector::Result PatternDetector::detect(void (*pinWriter)())
     switch (slopeDetector->detect())
     {
     case SlopeDetector::Result::AboveTolerance:
+    {
         lastMatch = 0;
         clock = 0;
         index = 0;
         pinWriter();
         return Result::None;
+    }
+
     case SlopeDetector::Result::WithinTolerance:
+    {
         Result res = process();
         if (res == Result::Found)
         {
@@ -73,6 +77,9 @@ PatternDetector::Result PatternDetector::detect(void (*pinWriter)())
             pinWriter();
         }
         return res;
+    }
+
+    case SlopeDetector::Result::BelowTolerance:
     default:
         lastMatch++;
         if (lastMatch >= MEASUREMENT_WINDOW)

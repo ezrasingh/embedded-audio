@@ -2,13 +2,13 @@
 
 void SlopeDetector::reset()
 {
-    time = 0;
+    clock = 0;
     maxSlope = 0;
 }
 
 void SlopeDetector::update()
 {
-    time++;
+    clock++;
 }
 
 SlopeDetector::Result SlopeDetector::detect()
