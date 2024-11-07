@@ -34,13 +34,13 @@ private:
     unsigned int timer[MEASUREMENT_WINDOW];
     unsigned int period;
     byte lastMatch;
-    float fundamentalFreq;
+    float refFreq;
     Signal *signal;
     SlopeDetector *slopeDetector;
 
 public:
     explicit PitchDetector(Signal *signal, SlopeDetector *slopeDetector)
-        : fundamentalFreq(DEFAULT_A4),
+        : refFreq(DEFAULT_A4),
           signal(signal),
           slopeDetector(slopeDetector)
     {
@@ -57,7 +57,7 @@ public:
     void update() override;
     Result detect(void (*pinWriter)());
 
-    void setFundamentalFreq(float freq);
+    void setRefFreq(float freq);
     float frequency() const;
     Pitch pitch() const;
 

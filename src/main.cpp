@@ -12,7 +12,7 @@ static PitchDetector pitchDetector(&signal, &slopeDetector);
 void setup()
 {
   System::setupWithSerial(9600);
-  pitchDetector.setFundamentalFreq(440.0f);
+  pitchDetector.setRefFreq(440.0f);
 }
 
 // Main loop that checks for signal clipping and frequency detection
