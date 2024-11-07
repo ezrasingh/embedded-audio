@@ -8,7 +8,6 @@ The following is an example of how to integrate and use the system in your Ardui
 
 ```cpp
 #include <Arduino.h>
-
 #include "core/signal.h"
 #include "core/system.h"
 #include "detectors/level/level.h"
@@ -16,7 +15,6 @@ The following is an example of how to integrate and use the system in your Ardui
 #include "detectors/pattern/pattern.h"
 #include "detectors/pitch/pitch.h"
 
-// Initialize the signal analyzer and detectors
 static SignalAnalyzer signal;
 static LevelDetector levelDetector(&signal);
 static SlopeDetector slopeDetector(&signal);
@@ -26,40 +24,38 @@ static PitchDetector pitchDetector(&signal, &levelDetector, &patternDetector);
 // Setup function for initializing serial communication and the system
 void setup()
 {
-  Serial.begin(9600);
-  System::setup();
+  System::setupWithSerial(9600);
+  pitchDetector.setFundamentalFreq(440.0f);
 }
 
 // Main loop that checks for signal clipping and frequency detection
 void loop()
 {
-  // If clipping is detected, ensure the clipping indicator LED is off
+  // If clipping was detected, ensure the clipping indicator LED is off
   if (signal.isClipping())
     System::turnOff(System::Pin::Indicator);
 
-  // If the level detector detects an above-threshold condition, print the frequency
+  // If the level detector detects an above-threshold condition
   if (levelDetector.detect() == LevelDetector::Result::AboveThreshold)
   {
-    unsigned int freq = patternDetector.frequency(); // Get frequency from pattern detector
-    Serial.print(freq);
-    Serial.println(" Hz");
+    Pitch pitch = pitchDetector.pitch(); // Get pitch from pattern detector
+    Serial.println(pitch.note());        // Print note from pitch
   }
 
   delay(1000); // Delay for 1 second before the next loop iteration
 }
 
-// Register audio input listener
-REGISTER_ADC_HANDLERS(
+MONITOR_ADC(
     System::turnOff(System::Pin::Output); // Turn off output pin initially
+    signal.update(ADCH);                  // Update signal with the latest ADC value
 
-    signal.update(ADCH); // Update signal with the latest ADC value
-    pitchDetector.detect([]
-                         { System::turnOn(System::Pin::Output); }); // Detect pitch and turn on output pin
-    pitchDetector.update();                                         // Update pitch detector state
+    pitchDetector.detect([]() {            // Defer execution with closure
+      System::turnOn(System::Pin::Output); // Detect pitch and turn on output pin
+    });
 
-    // If clipping is detected, turn on the clipping indicator LED
-    if (signal.isClipping())
-        System::turnOn(System::Pin::Indicator);)
+    if (signal.isClipping())                // If clipping is detected
+    System::turnOn(System::Pin::Indicator); // turn on the clipping indicator LED
+)
 ```
 
 ## Project Structure
@@ -76,8 +72,7 @@ src/
 │   ├── slope/            // Detects the slope of the signal (rate of change)
 │   ├── pattern/          // Detects patterns in the signal
 │   ├── pitch/            // Detects the pitch/frequency of the signal
-├── main.cpp              // Main Arduino sketch
-└── README.md             // Project documentation
+└── main.cpp              // Main Arduino sketch
 
 ```
 
@@ -91,11 +86,6 @@ The detectors folder contains several detectors that analyze different aspects o
 - **PitchDetector**: Detects the frequency (pitch) of the incoming signal.
 
 Each detector is implemented as a class with its own header and source files. The system is designed to be modular, so you can easily add or remove detectors based on your specific needs.
-
-## Dependencies
-
-**Arduino IDE**: You will need to have the Arduino IDE installed to compile and upload the code to your Arduino board.
-**Arduino Board**: This code is intended to run on an Arduino-based microcontroller.
 
 ## License
 
