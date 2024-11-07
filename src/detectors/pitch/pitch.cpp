@@ -51,7 +51,7 @@ Pitch PitchDetector::pitch() const
     return Pitch(noteIndex, centsDeviation);
 }
 
-PitchDetector::Result PitchDetector::detect(void (*pinWriter)())
+PitchDetector::Result PitchDetector::detect(void (*pinWriter)()) const
 {
     switch (slopeDetector->detect())
     {
