@@ -1,5 +1,5 @@
-#ifndef DETECTOR_H
-#define DETECTOR_H
+#ifndef BASE_DETECTOR_H
+#define BASE_DETECTOR_H
 
 // Template function to check if a value is within a given tolerance
 template <typename Type>
@@ -19,4 +19,4 @@ public:
     virtual ~Detector() = default; // Virtual destructor for proper cleanup
 };
 
-#endif // DETECTOR_H
+#endif // BASE_DETECTOR_H

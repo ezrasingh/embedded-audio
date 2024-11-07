@@ -1,23 +1,23 @@
-#include "signal.h"
+#include "Signal.h"
 
-void SignalAnalyzer::update(byte sample)
+void Signal::update(byte sample)
 {
     sampleBuffer[0] = sampleBuffer[1];
     sampleBuffer[1] = sample;
     delta = sampleBuffer[1] - sampleBuffer[0];
 };
 
-byte SignalAnalyzer::input() const
+byte Signal::input() const
 {
     return sampleBuffer[1];
 };
 
-byte SignalAnalyzer::slope() const
+byte Signal::slope() const
 {
     return delta;
 }
 
-Patterns::IsClipping SignalAnalyzer::isClipping() const
+Patterns::IsClipping Signal::isClipping() const
 {
     return (
         sampleBuffer[1] <= ADC_MIN || // clipping below
@@ -25,7 +25,7 @@ Patterns::IsClipping SignalAnalyzer::isClipping() const
     );
 }
 
-Patterns::PeakDirection SignalAnalyzer::peakDirection() const
+Patterns::PeakDirection Signal::peakDirection() const
 {
     if (delta > 0)
         return Patterns::PeakDirection::Rising;
@@ -34,7 +34,7 @@ Patterns::PeakDirection SignalAnalyzer::peakDirection() const
     return Patterns::PeakDirection::NoPeak;
 }
 
-Patterns::Trigger SignalAnalyzer::isTriggered(byte level) const
+Patterns::Trigger Signal::isTriggered(byte level) const
 {
     if (sampleBuffer[0] < level && sampleBuffer[1] >= level)
         return Patterns::Trigger::PositiveEdge;

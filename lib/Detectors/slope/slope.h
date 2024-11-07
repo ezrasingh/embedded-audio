@@ -1,8 +1,8 @@
 #ifndef SLOPE_DETECTOR_H
 #define SLOPE_DETECTOR_H
 
-#include "core/signal.h"
-#include "detectors/base/detector.h"
+#include <Signal.h>
+#include "../base/detector.h"
 
 // Slope detector to monitor changes in signal slope
 struct SlopeDetector : public Detector
@@ -10,10 +10,10 @@ struct SlopeDetector : public Detector
 private:
     unsigned int clock;
     byte maxSlope;
-    SignalAnalyzer *signal;
+    Signal *signal;
 
 public:
-    explicit SlopeDetector(SignalAnalyzer *analyzer) : signal(analyzer) {}
+    explicit SlopeDetector(Signal *signal) : signal(signal) {}
 
     enum class Result
     {

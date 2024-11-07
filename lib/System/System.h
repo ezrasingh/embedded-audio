@@ -1,21 +1,7 @@
 #ifndef SYSTEM_H
 #define SYSTEM_H
 
-#include <Arduino.h>
-
-// Interrupt Service Routine (ISR) for monitoring ADC values
-#define ADC_LOOP(handler) \
-    ISR(ADC_vect)         \
-    {                     \
-        handler           \
-    }
-
-// Interrupt Service Routine (ISR) for streaming DAC values
-#define DAC_LOOP(handler)  \
-    ISR(TIMER0_COMPA_vect) \
-    {                      \
-        handler            \
-    }
+#include "macros.h"
 
 // Facade interface for interacting with pins in an interrupt-safe way
 namespace System

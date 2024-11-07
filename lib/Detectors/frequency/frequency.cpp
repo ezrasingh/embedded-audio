@@ -20,5 +20,5 @@ void FrequencyDetector::update()
 
 float FrequencyDetector::frequency() const
 {
-    return (period > 0) ? static_cast<float>(SAMPLE_RATE) / static_cast<float>(period) : 0;
+    return (period > 0) ? static_cast<float>(ADC_SAMPLE_RATE) / static_cast<float>(period) : 0;
 }

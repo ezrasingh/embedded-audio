@@ -1,11 +1,10 @@
 #include <Arduino.h>
-#include "core/signal.h"
-#include "core/system.h"
-#include "detectors/level/level.h"
-#include "detectors/slope/slope.h"
-#include "detectors/pitch/pitch.h"
+#include <System.h>
+#include <Signal.h>
+#include <Detectors.h>
 
-static SignalAnalyzer signal;
+// static memory layout
+static Signal signal;
 static LevelDetector levelDetector(&signal);
 static SlopeDetector slopeDetector(&signal);
 static PitchDetector pitchDetector(&signal, &slopeDetector);
@@ -33,7 +32,8 @@ void loop()
   delay(1000);
 }
 
-DAC_LOOP( // passthrough
+DAC_LOOP(
+    // passthrough input
     System::writeDAC(signal.input());
 
     ) // DAC_LOOP

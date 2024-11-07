@@ -1,10 +1,11 @@
-#ifndef CONSTANTS_H
-#define CONSTANTS_H
+#ifndef CORE_CONSTANTS_H
+#define CORE_CONSTANTS_H
 
 #include <Arduino.h>
 
-// Sampling Rate
-constexpr unsigned int SAMPLE_RATE = 38462; // 38.462kHz
+// Sample Rates
+constexpr unsigned int DAC_SAMPLE_RATE = 40000; // 40kHz
+constexpr unsigned int ADC_SAMPLE_RATE = 38462; // 38.462kHz
 
 // ADC Settings for 8-bit precision
 constexpr byte ADC_MAX = 255;                  // Maximum (5V) ADC value represented as 255
@@ -19,4 +20,4 @@ constexpr int AMPLITUDE_THRESHOLD = 30; // Raise if signal is very noisy
 // Measurement Window Size
 constexpr unsigned int MEASUREMENT_WINDOW = 10; // Number of measurements before state reset
 
-#endif // CONSTANTS_H
+#endif // CORE_CONSTANTS_H

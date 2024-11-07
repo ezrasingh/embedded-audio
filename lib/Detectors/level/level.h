@@ -1,8 +1,8 @@
 #ifndef LEVEL_DETECTOR_H
 #define LEVEL_DETECTOR_H
 
-#include "core/signal.h"
-#include "detectors/base/detector.h"
+#include <Signal.h>
+#include "../base/detector.h"
 
 // Level detector to assess signal amplitude against a threshold
 struct LevelDetector : public Detector
@@ -11,10 +11,10 @@ private:
     unsigned int clock;
     byte maxAmp;
     byte prevMax;
-    SignalAnalyzer *signal;
+    Signal *signal;
 
 public:
-    explicit LevelDetector(SignalAnalyzer *analyzer) : signal(analyzer) {}
+    explicit LevelDetector(Signal *signal) : signal(signal) {}
 
     enum class Result
     {

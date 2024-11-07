@@ -1,8 +1,8 @@
 #ifndef FREQUENCY_DETECTOR_H
 #define FREQUENCY_DETECTOR_H
 
-#include "core/signal.h"
-#include "detectors/base/detector.h"
+#include <Signal.h>
+#include "../base/detector.h"
 
 // Frequency detector to measure signal frequency
 struct FrequencyDetector : public Detector
@@ -10,10 +10,10 @@ struct FrequencyDetector : public Detector
 private:
     unsigned int clock;
     unsigned int period;
-    SignalAnalyzer *signal;
+    Signal *signal;
 
 public:
-    explicit FrequencyDetector(SignalAnalyzer *analyzer) : signal(analyzer) {}
+    explicit FrequencyDetector(Signal *signal) : signal(signal) {}
 
     void reset() override;
     void update() override;

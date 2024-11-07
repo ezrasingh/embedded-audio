@@ -1,10 +1,10 @@
 #ifndef PITCH_DETECTOR_H
 #define PITCH_DETECTOR_H
 
-#include "utils.h"
-#include "core/signal.h"
-#include "detectors/base/detector.h"
-#include "detectors/slope/slope.h"
+#include <Signal.h>
+#include "core/utils.h"
+#include "../base/detector.h"
+#include "../slope/slope.h"
 #include "notes.h"
 
 // Reference note information for 12-tone equal temperament
@@ -35,13 +35,13 @@ private:
     unsigned int period;
     byte lastMatch;
     float fundamentalFreq;
-    SignalAnalyzer *signal;
+    Signal *signal;
     SlopeDetector *slopeDetector;
 
 public:
-    explicit PitchDetector(SignalAnalyzer *analyzer, SlopeDetector *slopeDetector)
+    explicit PitchDetector(Signal *signal, SlopeDetector *slopeDetector)
         : fundamentalFreq(DEFAULT_A4),
-          signal(analyzer),
+          signal(signal),
           slopeDetector(slopeDetector)
     {
     }

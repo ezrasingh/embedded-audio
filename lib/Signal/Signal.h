@@ -1,7 +1,7 @@
 #ifndef SIGNAL_H
 #define SIGNAL_H
 
-#include "constants.h"
+#include "core/constants.h"
 
 namespace Patterns
 {
@@ -22,7 +22,7 @@ namespace Patterns
     };
 }
 
-struct SignalAnalyzer
+struct Signal
 {
 private:
     // Owns state
@@ -30,7 +30,7 @@ private:
     byte delta;
 
 public:
-    SignalAnalyzer() : sampleBuffer{ADC_MIN, ADC_MIN} {};
+    Signal() : sampleBuffer{ADC_MIN, ADC_MIN} {};
     void update(byte sample);
 
     // visible state
