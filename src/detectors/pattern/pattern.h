@@ -31,10 +31,11 @@ public:
 
     void reset() override;
     void update() override;
-
     float frequency() const;
-    Result process();
     Result detect(void (*pinWriter)());
+
+protected:
+    inline Result process();
 };
 
 #endif // PATTERN_DETECTOR_H

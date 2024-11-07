@@ -16,8 +16,7 @@ static PitchDetector pitchDetector(&signal, &levelDetector, &patternDetector);
 // Setup function for initializing serial communication and the system
 void setup()
 {
-  Serial.begin(9600);
-  System::setup();
+  System::setupWithSerial(9600);
   pitchDetector.setFundamentalFreq(440.0f);
 }
 
@@ -31,21 +30,22 @@ void loop()
   // If the level detector detects an above-threshold condition, print the frequency
   if (levelDetector.detect() == LevelDetector::Result::AboveThreshold)
   {
-    const Pitch pitch = patternDetector.pitch(); // Get pitch from pattern detector
-    Serial.println(pitch.note());                // Print note from pitch
+    const Pitch pitch = pitchDetector.pitch(); // Get pitch from pattern detector
+    Serial.println(pitch.note());              // Print note from pitch
   }
 
   delay(1000); // Delay for 1 second before the next loop iteration
 }
 
-// Register audio input listener
-REGISTER_ADC_HANDLERS(
+// Handle ADC input
+ON_ADC(
     System::turnOff(System::Pin::Output); // Turn off output pin initially
+    signal.update(ADCH);                  // Update signal with the latest ADC value
 
-    signal.update(ADCH); // Update signal with the latest ADC value
-    pitchDetector.detect([]
-                         { System::turnOn(System::Pin::Output); }); // Detect pitch and turn on output pin
+    pitchDetector.detect([]() {            // Defer execution with closure
+      System::turnOn(System::Pin::Output); // Detect pitch and turn on output pin
+    });
 
-    // If clipping is detected, turn on the clipping indicator LED
-    if (signal.isClipping())
-        System::turnOn(System::Pin::Indicator);)
+    if (signal.isClipping())                // If clipping is detected
+    System::turnOn(System::Pin::Indicator); // turn on the clipping indicator LED
+)

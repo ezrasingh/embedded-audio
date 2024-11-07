@@ -1,13 +1,5 @@
 #include "signal.h"
 
-// Initialize sampleBuffer and delta
-SignalAnalyzer::SignalAnalyzer()
-{
-    sampleBuffer[0] = 0;
-    sampleBuffer[1] = 0;
-    delta = 0;
-}
-
 void SignalAnalyzer::update(byte sample)
 {
     sampleBuffer[0] = sampleBuffer[1];
@@ -25,9 +17,12 @@ byte SignalAnalyzer::slope() const
     return delta;
 }
 
-bool SignalAnalyzer::isClipping() const
+Patterns::IsClipping SignalAnalyzer::isClipping() const
 {
-    return sampleBuffer[1] == ADC_MIN || sampleBuffer[1] == ADC_MAX;
+    return (
+        sampleBuffer[1] <= ADC_MIN || // clipping below
+        sampleBuffer[1] >= ADC_MAX    // clipping above
+    );
 }
 
 Patterns::PeakDirection SignalAnalyzer::peakDirection() const

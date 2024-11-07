@@ -19,7 +19,7 @@ float PatternDetector::frequency() const
     return (period > 0) ? static_cast<float>(SAMPLE_RATE) / static_cast<float>(period) : 0;
 }
 
-PatternDetector::Result PatternDetector::process()
+inline PatternDetector::Result PatternDetector::process()
 {
     byte nextDelta = signal->slope();
     delta[index] = nextDelta;

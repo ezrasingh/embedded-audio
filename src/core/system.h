@@ -4,16 +4,16 @@
 #include <Arduino.h>
 
 // Interrupt Service Routine (ISR) when a new ADC value is ready
-#define REGISTER_ADC_HANDLERS(actions) \
-    ISR(ADC_vect)                      \
-    {                                  \
-        actions                        \
+#define ON_ADC(handler) \
+    ISR(ADC_vect)       \
+    {                   \
+        handler         \
     }
 
 // Facade interface for interacting with pins in an interrupt-safe way
 namespace System
 {
-    enum Pin
+    enum class Pin
     {
         Indicator,
         Output
@@ -21,6 +21,9 @@ namespace System
 
     // Initializes system settings, including pin configuration and ADC setup
     void setup();
+
+    // Initialize system with serial
+    void setupWithSerial(unsigned long baud);
 
     // Turns off the specified pin
     void turnOff(Pin pin);

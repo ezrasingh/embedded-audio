@@ -5,6 +5,8 @@
 
 namespace Patterns
 {
+    typedef bool IsClipping;
+
     enum class Trigger
     {
         PositiveEdge,
@@ -28,12 +30,15 @@ private:
     byte delta;
 
 public:
-    SignalAnalyzer();
-
+    SignalAnalyzer() : sampleBuffer{ADC_MIN, ADC_MIN} {};
     void update(byte sample);
+
+    // visible state
     byte input() const;
     byte slope() const;
-    bool isClipping() const;
+
+    // pattern analysis
+    Patterns::IsClipping isClipping() const;
     Patterns::PeakDirection peakDirection() const;
     Patterns::Trigger isTriggered(byte level = ADC_EQUILIBRIUM) const;
 };

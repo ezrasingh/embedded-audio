@@ -25,6 +25,13 @@ void System::setup()
     interrupts(); // Enable interrupts
 }
 
+// Initializes system settings, including pin configuration and ADC setup
+void System::setupWithSerial(unsigned long baud)
+{
+    Serial.begin(baud);
+    System::setup();
+}
+
 // Turns off the specified pin
 void System::turnOff(Pin pin)
 {

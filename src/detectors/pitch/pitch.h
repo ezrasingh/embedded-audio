@@ -6,6 +6,7 @@
 #include "detectors/base/detector.h"
 #include "detectors/level/level.h"
 #include "detectors/pattern/pattern.h"
+#include "notes.h"
 
 // Reference note information for 12-tone equal temperament
 constexpr float DEFAULT_A4 = 440.0f;
@@ -27,7 +28,7 @@ public:
 // Pitch detector to integrate multiple signal analyzers
 struct PitchDetector : public Detector
 {
-    float fundamentalFreq;
+    float fundamentalFreq = DEFAULT_A4;
 
 private:
     SignalAnalyzer *signal;
@@ -38,8 +39,7 @@ public:
     explicit PitchDetector(SignalAnalyzer *analyzer, LevelDetector *levelDetector, PatternDetector *patternDetector)
         : signal(analyzer),
           levelDetector(levelDetector),
-          patternDetector(patternDetector),
-          fundamentalFreq(DEFAULT_A4) {}
+          patternDetector(patternDetector) {}
 
     void reset() override;
     void update() override;

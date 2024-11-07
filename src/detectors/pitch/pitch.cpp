@@ -1,7 +1,5 @@
 #include "pitch.h"
 
-const String NOTES[12] = {"A", "A#/Bb", "B", "C", "C#/Db", "D", "D#/Eb", "E", "F", "F#/Gb", "G", "G#/Ab"};
-
 float Pitch::cents() const
 {
     return deviation;
@@ -9,7 +7,7 @@ float Pitch::cents() const
 
 String Pitch::note() const
 {
-    return NOTES[index];
+    return NOTES(index);
 }
 
 void PitchDetector::reset()
