@@ -15,4 +15,4 @@
                     : index == 11  ? "G#/Ab" \
                                    : "")
 
-#endif
+#endif // PITCH_NOTES_H

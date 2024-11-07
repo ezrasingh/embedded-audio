@@ -3,14 +3,12 @@
 #include "core/system.h"
 #include "detectors/level/level.h"
 #include "detectors/slope/slope.h"
-#include "detectors/pattern/pattern.h"
 #include "detectors/pitch/pitch.h"
 
 static SignalAnalyzer signal;
 static LevelDetector levelDetector(&signal);
 static SlopeDetector slopeDetector(&signal);
-static PatternDetector patternDetector(&signal, &slopeDetector);
-static PitchDetector pitchDetector(&signal, &levelDetector, &patternDetector);
+static PitchDetector pitchDetector(&signal, &slopeDetector);
 
 // Setup function for initializing serial communication and the system
 void setup()
@@ -40,10 +38,20 @@ MONITOR_ADC(
     System::turnOff(System::Pin::Output); // Turn off output pin initially
     signal.update(ADCH);                  // Update signal with the latest ADC value
 
-    pitchDetector.detect([]() {            // Defer execution with closure
-      System::turnOn(System::Pin::Output); // Detect pitch and turn on output pin
-    });
+    Patterns::Trigger trigger = signal.isTriggered(ADC_EQUILIBRIUM);
 
-    if (signal.isClipping())                // If clipping is detected
-    System::turnOn(System::Pin::Indicator); // Turn on the clipping indicator LED
-)
+    if (trigger == Patterns::Trigger::PositiveEdge) {
+      pitchDetector.detect([]() {            // Defer execution with closure
+        System::turnOn(System::Pin::Output); // Detect pitch and turn on output pin
+      });
+    }
+
+    if (signal.isClipping()) {                // If clipping is detected
+      System::turnOn(System::Pin::Indicator); // Turn on the clipping indicator LED
+    }
+
+    pitchDetector.update();
+
+    levelDetector.update();
+
+    ) // MONITOR_ADC

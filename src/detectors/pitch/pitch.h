@@ -4,8 +4,7 @@
 #include "utils.h"
 #include "core/signal.h"
 #include "detectors/base/detector.h"
-#include "detectors/level/level.h"
-#include "detectors/pattern/pattern.h"
+#include "detectors/slope/slope.h"
 #include "notes.h"
 
 // Reference note information for 12-tone equal temperament
@@ -25,28 +24,43 @@ public:
     String note() const;
 };
 
-// Pitch detector to integrate multiple signal analyzers
+// Pattern detector to recognize periodic signal patterns
 struct PitchDetector : public Detector
 {
-    float fundamentalFreq = DEFAULT_A4;
-
 private:
+    unsigned int clock;
+    byte index;
+    byte delta[MEASUREMENT_WINDOW];
+    unsigned int timer[MEASUREMENT_WINDOW];
+    unsigned int period;
+    byte lastMatch;
+    float fundamentalFreq;
     SignalAnalyzer *signal;
-    LevelDetector *levelDetector;
-    PatternDetector *patternDetector;
+    SlopeDetector *slopeDetector;
 
 public:
-    explicit PitchDetector(SignalAnalyzer *analyzer, LevelDetector *levelDetector, PatternDetector *patternDetector)
+    explicit PitchDetector(SignalAnalyzer *analyzer, SlopeDetector *slopeDetector)
         : signal(analyzer),
-          levelDetector(levelDetector),
-          patternDetector(patternDetector) {}
+          slopeDetector(slopeDetector),
+          fundamentalFreq(DEFAULT_A4) {}
+
+    enum class Result
+    {
+        Init,
+        Found,
+        None
+    };
 
     void reset() override;
     void update() override;
+    Result detect(void (*pinWriter)());
 
-    void detect(void (*pinWriter)());
     void setFundamentalFreq(float freq);
+    float frequency() const;
     Pitch pitch() const;
+
+protected:
+    inline Result process();
 };
 
 #endif // PITCH_DETECTOR_H
