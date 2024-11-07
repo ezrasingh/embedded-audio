@@ -1,4 +1,4 @@
-# Signal Detection System
+# Embedded Audio IO Processing
 
 This project implements a signal detection system designed for real-time audio signal processing using Arduino. It leverages multiple detectors to identify signal clipping, frequency, and other properties in an incoming audio stream. The system is modular, with various detection modules to handle different aspects of signal analysis.
 
@@ -19,7 +19,6 @@ static LevelDetector levelDetector(&signal);
 static SlopeDetector slopeDetector(&signal);
 static PitchDetector pitchDetector(&signal, &slopeDetector);
 
-// Setup function for initializing serial communication and the system
 void setup()
 {
   System::setupWithSerial(9600);
@@ -33,7 +32,7 @@ void loop()
   if (signal.isClipping())
     System::turnOff(System::Pin::Indicator);
 
-  // If the level detector detects an above-threshold condition
+  // If the level detector goes above-threshold
   if (levelDetector.detect() == LevelDetector::Result::AboveThreshold)
   {
     Pitch pitch = pitchDetector.pitch(); // Get pitch from pattern detector
@@ -43,10 +42,16 @@ void loop()
   delay(1000); // Delay for 1 second before the next loop iteration
 }
 
-MONITOR_ADC(
-    System::turnOff(System::Pin::Output); // Turn off output pin initially
-    signal.update(ADCH);                  // Update signal with the latest ADC value
+DAC_LOOP( // passthrough
+    System::writeDAC(signal.input());
 
+    ) // DAC_LOOP
+
+
+ADC_LOOP(
+    System::turnOff(System::Pin::Output); // Turn off output pin initially
+
+    signal.update(System::readADC());     // Update signal with the latest ADC value
     Patterns::Trigger trigger = signal.isTriggered(ADC_EQUILIBRIUM);
 
     if (trigger == Patterns::Trigger::PositiveEdge) {
@@ -54,47 +59,31 @@ MONITOR_ADC(
         System::turnOn(System::Pin::Output); // Detect pitch and turn on output pin
       });
     }
-
     if (signal.isClipping()) {                // If clipping is detected
       System::turnOn(System::Pin::Indicator); // Turn on the clipping indicator LED
     }
-
+    // update detectors
     pitchDetector.update();
-
     levelDetector.update();
 
-    ) // MONITOR_ADC
-```
-
-## Project Structure
-
-The project consists of multiple modules for handling different aspects of signal processing. Below is a breakdown of the folder structure:
-
-```shell
-src/
-├── core/
-│   ├── signal.h          // Signal analyzer class and utilities
-│   ├── system.h          // System interface for pin management and ADC setup
-├── detectors/
-│   ├── level/            // Detects signal levels above/below a threshold
-│   ├── slope/            // Detects the slope of the signal (rate of change)
-│   ├── pattern/          // Detects patterns in the signal
-│   ├── pitch/            // Detects the pitch/frequency of the signal
-└── main.cpp              // Main Arduino sketch
-
+    ) // ADC_LOOP
 ```
 
 ## Detectors Overview
 
 The detectors folder contains several detectors that analyze different aspects of the signal:
 
+- **PitchDetector**: Detects the frequency of the incoming signal.
 - **LevelDetector**: Detects whether the signal is above or below a set threshold.
 - **SlopeDetector**: Detects the rate of change of the signal.
-- **PatternDetector**: Identifies specific patterns in the signal.
-- **PitchDetector**: Detects the frequency (pitch) of the incoming signal.
+- **PitchDetector**: Detects the pitch of the incoming signal.
 
 Each detector is implemented as a class with its own header and source files. The system is designed to be modular, so you can easily add or remove detectors based on your specific needs.
 
+## Contributing
+
+Contributions are welcome! Please see the [contributing guidelines](CONTRIBUTING.md) for more information.
+
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the [Apache 2.0](LICENSE-APACHE) or [MIT License](LICENSE-MIT) (your choice).

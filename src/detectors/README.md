@@ -1,18 +1,17 @@
-# Detectors Module
+# Detectors
 
-The `detectors` folder contains various classes and functions that are responsible for detecting different signal patterns, levels, frequencies, and other key metrics in the system. These detectors are designed to analyze data from the signal input and process it in real-time, supporting a variety of detection strategies for different signal conditions.
+The `detectors` library contains various classes and functions that are responsible for detecting different signal patterns, levels, frequencies, and other key metrics in the system. These detectors are designed to analyze data from the signal input and process it in real-time, supporting a variety of detection strategies for different signal conditions.
 
 ## Overview
 
 The `detectors` folder contains several files, each corresponding to a specific type of signal detector. Below is a breakdown of the detectors and their corresponding files:
 
-| **Detector**          | **Description**                                                      | **Header File** | **Source File** |
-| --------------------- | -------------------------------------------------------------------- | --------------- | --------------- |
-| **LevelDetector**     | Detects whether the signal level is above or below a set threshold.  | `level.h`       | `level.cpp`     |
-| **SlopeDetector**     | Detects the slope of the signal, analyzing its rate of change.       | `slope.h`       | `slope.cpp`     |
-| **PatternDetector**   | Detects specific patterns in the signal (e.g., pitch or modulation). | `pattern.h`     | `pattern.cpp`   |
-| **PitchDetector**     | Detects the frequency (pitch) of the incoming signal.                | `pitch.h`       | `pitch.cpp`     |
-| **FrequencyDetector** | Detects and calculates the frequency of the incoming signal.         | `frequency.h`   | `frequency.cpp` |
+| **Detector**          | **Description**                                                     | **Header File** | **Source File** |
+| --------------------- | ------------------------------------------------------------------- | --------------- | --------------- |
+| **LevelDetector**     | Detects whether the signal level is above or below a set threshold. | `level.h`       | `level.cpp`     |
+| **SlopeDetector**     | Detects the slope of the signal, analyzing its rate of change.      | `slope.h`       | `slope.cpp`     |
+| **PitchDetector**     | Detects the frequency (pitch) of the incoming signal.               | `pitch.h`       | `pitch.cpp`     |
+| **FrequencyDetector** | Detects and calculates the frequency of the incoming signal.        | `frequency.h`   | `frequency.cpp` |
 
 ## Purpose
 
@@ -42,7 +41,7 @@ void loop(){
 
 }
 
-MONITOR_ADC(
+ADC_LOOP(
     if (signal.isClipping()) { // turn on indicator
         System::turnOn(System::Pin::Indicator);
     }
@@ -57,8 +56,4 @@ MONITOR_ADC(
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](../../LICENSE) file for details.
-
-## Acknowledgments
-
-- Thanks to the open-source community for providing inspiration and resources that helped in the development of the signal detection algorithms.
+This project is licensed under the [Apache 2.0](../../LICENSE-APACHE) or [MIT License](../../LICENSE-MIT) (your choice).
