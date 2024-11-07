@@ -3,7 +3,7 @@
 
 #include <Arduino.h>
 
-// Interrupt Service Routine (ISR) when a new ADC value is ready
+// Interrupt Service Routine (ISR) for monitoring ADC values
 #define ADC_LOOP(handler) \
     ISR(ADC_vect)         \
     {                     \

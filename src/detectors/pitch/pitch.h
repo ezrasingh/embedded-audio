@@ -40,9 +40,11 @@ private:
 
 public:
     explicit PitchDetector(SignalAnalyzer *analyzer, SlopeDetector *slopeDetector)
-        : signal(analyzer),
-          slopeDetector(slopeDetector),
-          fundamentalFreq(DEFAULT_A4) {}
+        : fundamentalFreq(DEFAULT_A4),
+          signal(analyzer),
+          slopeDetector(slopeDetector)
+    {
+    }
 
     enum class Result
     {
