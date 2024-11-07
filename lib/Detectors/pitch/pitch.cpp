@@ -37,17 +37,14 @@ void PitchDetector::setRefFreq(float freq)
 // Function to determine the closest note to a given frequency
 Pitch PitchDetector::pitch() const
 {
-    float freq = frequency(); // Get frequency from pattern detector
-    // Calculate the number of half steps from A4
+    float freq = frequency(); // Get frequency estimate
     float halfStepsFromA4 = round(12.0f * log2(freq / refFreq));
-    // Calculate the frequency of the closest note
     float closestFreq = refFreq * pow(2.0f, halfStepsFromA4 / 12.0f);
-    // Calculate deviation in cents
     float centsDeviation = 1200.0f * log2(freq / closestFreq);
-    // Map halfStepsFromA4 to a note within the 12-tone system
-    int noteIndex = static_cast<int>(halfStepsFromA4) % 12;
-    if (noteIndex < 0)
-        noteIndex += 12; // Handle negative wraparound for notes below A4
+    // Map half steps to a note within the 12-tone system
+    uint8_t noteIndex = static_cast<int>(halfStepsFromA4) % 12;
+    if (noteIndex < 0) // Handle negative wraparound
+        noteIndex += 12;
     return Pitch(noteIndex, centsDeviation);
 }
 
