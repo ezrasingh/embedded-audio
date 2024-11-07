@@ -54,7 +54,7 @@ MONITOR_ADC(
     });
 
     if (signal.isClipping())                // If clipping is detected
-    System::turnOn(System::Pin::Indicator); // turn on the clipping indicator LED
+    System::turnOn(System::Pin::Indicator); // Turn on the clipping indicator LED
 )
 ```
 
