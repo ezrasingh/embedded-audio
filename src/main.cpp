@@ -26,11 +26,11 @@ void loop()
   if (signal.isClipping())
     System::turnOff(System::Pin::Indicator);
 
-  // If the level detector detects an above-threshold condition, print the frequency
+  // If the level detector detects an above-threshold condition
   if (levelDetector.detect() == LevelDetector::Result::AboveThreshold)
   {
-    const Pitch pitch = pitchDetector.pitch(); // Get pitch from pattern detector
-    Serial.println(pitch.note());              // Print note from pitch
+    Pitch pitch = pitchDetector.pitch(); // Get pitch from pattern detector
+    Serial.println(pitch.note());        // Print note from pitch
   }
 
   delay(1000); // Delay for 1 second before the next loop iteration
