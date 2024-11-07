@@ -24,38 +24,29 @@ To use the detectors, you need to include the appropriate header files in your p
 
 ```cpp
 #include <Arduino.h>
-
 #include "core/signal.h"
 #include "core/system.h"
-#include "detectors/level/level.h"
-#include "detectors/slope/slope.h"
-#include "detectors/pattern/pattern.h"
-#include "detectors/pitch/pitch.h"
 
 static SignalAnalyzer signal;
-static LevelDetector levelDetector(&signal);
-static SlopeDetector slopeDetector(&signal);
-static PatternDetector patternDetector(&signal, &slopeDetector);
-static PitchDetector pitchDetector(&signal, &levelDetector, &patternDetector);
 
 void setup() {
-    // Initialize necessary hardware, like ADC and pins
+    // Initialize necessary hardware
     System::setup();
 }
 
-void loop() {
-    // Update detectors with new signal data
-    pitchDetector.detect([] {
-        System::turnOn(System::Pin::Output);
-    });
-    pitchDetector.update();
-
+void loop(){
+    // If clipping was detected, ensure the clipping indicator LED is off
     if (signal.isClipping()) {
-        System::turnOn(System::Pin::Indicator);
+        System::turnOff(System::Pin::Indicator);
     }
 
-    // Further actions based on detected patterns or levels
 }
+
+MONITOR_ADC(
+    if (signal.isClipping()) { // turn on indicator
+        System::turnOn(System::Pin::Indicator);
+    }
+)
 ```
 
 ## Future Improvements

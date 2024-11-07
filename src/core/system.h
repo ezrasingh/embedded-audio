@@ -4,10 +4,10 @@
 #include <Arduino.h>
 
 // Interrupt Service Routine (ISR) when a new ADC value is ready
-#define ON_ADC(handler) \
-    ISR(ADC_vect)       \
-    {                   \
-        handler         \
+#define MONITOR_ADC(handler) \
+    ISR(ADC_vect)            \
+    {                        \
+        handler              \
     }
 
 // Facade interface for interacting with pins in an interrupt-safe way

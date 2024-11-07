@@ -1,5 +1,4 @@
 #include <Arduino.h>
-
 #include "core/signal.h"
 #include "core/system.h"
 #include "detectors/level/level.h"
@@ -23,7 +22,7 @@ void setup()
 // Main loop that checks for signal clipping and frequency detection
 void loop()
 {
-  // If clipping is detected, ensure the clipping indicator LED is off
+  // If clipping was detected, ensure the clipping indicator LED is off
   if (signal.isClipping())
     System::turnOff(System::Pin::Indicator);
 
@@ -37,8 +36,7 @@ void loop()
   delay(1000); // Delay for 1 second before the next loop iteration
 }
 
-// Handle ADC input
-ON_ADC(
+MONITOR_ADC(
     System::turnOff(System::Pin::Output); // Turn off output pin initially
     signal.update(ADCH);                  // Update signal with the latest ADC value
 
