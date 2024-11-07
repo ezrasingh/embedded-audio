@@ -10,7 +10,6 @@ static LevelDetector levelDetector(&signal);
 static SlopeDetector slopeDetector(&signal);
 static PitchDetector pitchDetector(&signal, &slopeDetector);
 
-// Setup function for initializing serial communication and the system
 void setup()
 {
   System::setupWithSerial(9600);
@@ -27,17 +26,22 @@ void loop()
   // If the level detector detects an above-threshold condition
   if (levelDetector.detect() == LevelDetector::Result::AboveThreshold)
   {
-    Pitch pitch = pitchDetector.pitch(); // Get pitch from pattern detector
-    Serial.println(pitch.note());        // Print note from pitch
+    String note = pitchDetector.pitch().note();
+    Serial.println(note);
   }
 
-  delay(1000); // Delay for 1 second before the next loop iteration
+  delay(1000);
 }
 
-MONITOR_ADC(
-    System::turnOff(System::Pin::Output); // Turn off output pin initially
-    signal.update(ADCH);                  // Update signal with the latest ADC value
+DAC_LOOP( // passthrough
+    System::writeDAC(signal.input());
 
+    ) // DAC_LOOP
+
+ADC_LOOP(
+    System::turnOff(System::Pin::Output); // Turn off output pin initially
+
+    signal.update(System::readADC()); // Update signal with the latest ADC value
     Patterns::Trigger trigger = signal.isTriggered(ADC_EQUILIBRIUM);
 
     if (trigger == Patterns::Trigger::PositiveEdge) {
@@ -51,7 +55,6 @@ MONITOR_ADC(
     }
 
     pitchDetector.update();
-
     levelDetector.update();
 
-    ) // MONITOR_ADC
+    ) // ADC_LOOP

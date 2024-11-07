@@ -4,10 +4,17 @@
 #include <Arduino.h>
 
 // Interrupt Service Routine (ISR) when a new ADC value is ready
-#define MONITOR_ADC(handler) \
-    ISR(ADC_vect)            \
-    {                        \
-        handler              \
+#define ADC_LOOP(handler) \
+    ISR(ADC_vect)         \
+    {                     \
+        handler           \
+    }
+
+// Interrupt Service Routine (ISR) for streaming DAC values
+#define DAC_LOOP(handler)  \
+    ISR(TIMER0_COMPA_vect) \
+    {                      \
+        handler            \
     }
 
 // Facade interface for interacting with pins in an interrupt-safe way
@@ -30,6 +37,10 @@ namespace System
 
     // Turns on the specified pin
     void turnOn(Pin pin);
+
+    // Interface with hardware converters
+    byte readADC();
+    void writeDAC(byte signal);
 };
 
 #endif // SYSTEM_H

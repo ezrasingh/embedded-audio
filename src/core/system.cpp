@@ -3,11 +3,19 @@
 // Initializes system settings, including pin configuration and ADC setup
 void System::setup()
 {
+
+    // set digital pins 0-7 as outputs for DAC
+    for (int i = 0; i <= 7; i++)
+    {
+        pinMode(i, OUTPUT);
+    }
     pinMode(13, OUTPUT); // LED clipping indicator pin
     pinMode(12, OUTPUT); // Output pin
-    noInterrupts();
 
-    // Set up continuous sampling of analog pin 0 at 38.5kHz
+    noInterrupts(); // disable interrupts
+
+    // Set up continuous sampling of A0 pin at 38.5kHz
+
     // Clear ADCSRA and ADCSRB registers
     ADCSRA = 0;
     ADCSRB = 0;
@@ -21,6 +29,18 @@ void System::setup()
     ADCSRA |= (1 << ADIE);                 // Enable interrupt when measurement is complete
     ADCSRA |= (1 << ADEN);                 // Enable ADC
     ADCSRA |= (1 << ADSC);                 // Start ADC measurements
+
+    // Set timer0 interrupt at 40kHz
+
+    // Clear TCCR0A and TCCR0B registers
+    TCCR0A = 0;
+    TCCR0B = 0;
+    TCNT0 = 0; // Initialize counter value to 0
+    // Set compare match register for 40khz increments
+    OCR0A = 49;              // = (16*10^6) / (40000*8) - 1 (must be <256)
+    TCCR0A |= (1 << WGM01);  // Enable CTC mode
+    TCCR0B |= (1 << CS11);   // Set CS11 bit for 8 prescaler
+    TIMSK0 |= (1 << OCIE0A); // Enable timer compare interrupt
 
     interrupts(); // Enable interrupts
 }
@@ -48,4 +68,16 @@ void System::turnOn(Pin pin)
         PORTB |= B00010000; // Set pin 12 high (turn on output pin)
     else if (pin == Pin::Indicator)
         PORTB |= B00100000; // Set pin 13 high (turn on clipping indicator LED)
+}
+
+// Reads hardware Analog->Digital value
+byte System::readADC()
+{
+    return ADCH; // A0 pin
+}
+
+// Writes a sample to hardware Digital->Analog
+void System::writeDAC(byte sample)
+{
+    PORTD = sample; // writes to pins 0-7
 }

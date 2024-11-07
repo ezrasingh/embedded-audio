@@ -53,7 +53,7 @@ public:
 
     void reset() override;
     void update() override;
-    Result detect(void (*pinWriter)()) const;
+    Result detect(void (*pinWriter)());
 
     void setFundamentalFreq(float freq);
     float frequency() const;
