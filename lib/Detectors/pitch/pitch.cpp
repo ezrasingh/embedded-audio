@@ -42,7 +42,7 @@ Pitch PitchDetector::pitch() const
     float closestFreq = refFreq * pow(2.0f, halfStepsFromA4 / 12.0f);
     float centsDeviation = 1200.0f * log2(freq / closestFreq);
     // Map half steps to a note within the 12-tone system
-    uint8_t noteIndex = static_cast<int>(halfStepsFromA4) % 12;
+    int noteIndex = static_cast<int>(halfStepsFromA4) % 12;
     if (noteIndex < 0) // Handle negative wraparound
         noteIndex += 12;
     return Pitch(noteIndex, centsDeviation);
