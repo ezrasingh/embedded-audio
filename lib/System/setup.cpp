@@ -31,14 +31,12 @@ inline void setupDAC()
 }
 
 // Initializes system settings and pin configurations
-void System::setup()
+inline void System::setup()
 {
-    // Set digital pins 0-7 as outputs for DAC
-    for (int i = 0; i <= 7; i++)
-        pinMode(i, OUTPUT);
-    pinMode(13, OUTPUT); // LED clipping indicator pin
-    pinMode(12, OUTPUT); // Output pin
-
+    // Set pins 0-7 as outputs for DAC
+    DDRD = B11111111;
+    // Set pins 12 and 13 as outputs
+    DDRB |= B00110000;
     noInterrupts(); // Disable interrupts
     setupADC();     // Setup ADC interrupts
     setupDAC();     // Setup DAC interrupts

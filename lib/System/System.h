@@ -3,17 +3,17 @@
 
 #include "macros.h"
 
-// Facade interface for interacting with pins in an interrupt-safe way
+// Facade interface for interacting with pins
 namespace System
 {
     enum class Pin
     {
-        Indicator,
-        Output
+        Indicator, // pin 13
+        Output     // pin 12
     };
 
     // Initializes system settings, including pin configuration and ADC setup
-    void setup();
+    inline void setup();
 
     // Initialize system with serial
     void setupWithSerial(unsigned long baud);

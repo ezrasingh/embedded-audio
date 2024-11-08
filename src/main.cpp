@@ -9,27 +9,26 @@ static LevelDetector levelDetector(&signal);
 static SlopeDetector slopeDetector(&signal);
 static PitchDetector pitchDetector(&signal, &slopeDetector);
 
-void setup()
+int main(void)
 {
   System::setupWithSerial(9600);
   pitchDetector.setRefFreq(440.0f);
-}
 
-// Main loop that checks for signal clipping and frequency detection
-void loop()
-{
-  // If clipping was detected, ensure the clipping indicator LED is off
-  if (signal.isClipping())
-    System::turnOff(System::Pin::Indicator);
-
-  // If the level detector detects an above-threshold condition
-  if (levelDetector.detect() == LevelDetector::Result::AboveThreshold)
+  while (true) // loop
   {
-    String note = pitchDetector.pitch().note();
-    Serial.println(note);
-  }
+    // If clipping was detected, ensure the clipping indicator LED is off
+    if (signal.isClipping())
+      System::turnOff(System::Pin::Indicator);
 
-  delay(1000);
+    // If the level detector detects an above-threshold condition
+    if (levelDetector.detect() == LevelDetector::Result::AboveThreshold)
+    {
+      String note = pitchDetector.pitch().note();
+      Serial.println(note);
+    }
+
+    _delay_ms(1000);
+  }
 }
 
 DAC_LOOP(
