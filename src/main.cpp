@@ -18,12 +18,8 @@ int main(void)
     if (signal.isClipping())
       System::turnOff(System::Pin::Indicator);
 
-    // If the level detector detects an above-threshold condition
-    if (levelDetector.detect() == LevelDetector::Result::AboveThreshold)
-    {
-      String note = pitchDetector.pitch().note();
-      Serial.println(note);
-    }
+    String note = pitchDetector.pitch().note();
+    Serial.println(note);
   }); // loop
 }
 
