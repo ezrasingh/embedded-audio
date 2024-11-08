@@ -3,7 +3,6 @@
 #include <Signal.h>
 #include <Detectors.h>
 
-// static memory layout
 static Signal signal;
 static LevelDetector levelDetector(&signal);
 static SlopeDetector slopeDetector(&signal);
@@ -14,8 +13,7 @@ int main(void)
   System::setupWithSerial(9600);
   pitchDetector.setRefFreq(440.0f);
 
-  while (true) // loop
-  {
+  System::loop([] { // loop
     // If clipping was detected, ensure the clipping indicator LED is off
     if (signal.isClipping())
       System::turnOff(System::Pin::Indicator);
@@ -26,9 +24,7 @@ int main(void)
       String note = pitchDetector.pitch().note();
       Serial.println(note);
     }
-
-    _delay_ms(1000);
-  }
+  }); // loop
 }
 
 DAC_LOOP(

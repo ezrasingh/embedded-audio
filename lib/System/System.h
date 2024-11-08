@@ -3,6 +3,8 @@
 
 #include "macros.h"
 
+constexpr double SYSTEM_DELAY = 1000;
+
 // Facade interface for interacting with pins
 namespace System
 {
@@ -14,13 +16,13 @@ namespace System
 
     // Initializes system settings, including pin configuration and ADC setup
     inline void setup();
-
     // Initialize system with serial
     void setupWithSerial(unsigned long baud);
+    // main loop
+    void loop(void (*handler)());
 
     // Turns off the specified pin
     void turnOff(Pin pin);
-
     // Turns on the specified pin
     void turnOn(Pin pin);
 

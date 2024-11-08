@@ -1,5 +1,15 @@
 #include "System.h"
 
+//
+void System::loop(void (*handler)())
+{
+    while (true)
+    {
+        handler();
+        _delay_ms(SYSTEM_DELAY);
+    }
+}
+
 // Turns off the specified pin
 void System::turnOff(Pin pin)
 {
